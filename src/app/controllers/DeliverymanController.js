@@ -1,15 +1,25 @@
 import * as Yup from 'yup';
 import Deliveryman from '../models/Deliveryman';
+import File from '../models/File';
 
 class DeliverymanController {
   async index(req, res) {
-    const deliverymans = await Deliveryman.findAll();
+    const deliverymans = await Deliveryman.findAll({
+      attributes: ['id', 'name', 'email', 'avatar_id'],
+      include: [
+        {
+          model: File,
+          as: 'avatar',
+          attributes: ['name', 'path', 'url'],
+        },
+      ],
+    });
     if (!deliverymans) {
       return res
         .status(400)
         .json({ error: 'Não Existe entregadores cadastrados!' });
     }
-    return res.json({ deliverymans });
+    return res.json(deliverymans);
   }
 
   async store(req, res) {
