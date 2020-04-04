@@ -13,6 +13,7 @@ import DeliveriesController from './app/controllers/DeliveriesController';
 import DeliveredController from './app/controllers/DeliveredController';
 import StartDeliveryController from './app/controllers/StartDeliveryController';
 import EndDeliveryController from './app/controllers/EndDeliveryController';
+import DeliveryProblemsController from './app/controllers/DeliveryProblemsController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -33,6 +34,8 @@ routes.put(
   EndDeliveryController.update
 );
 
+routes.post('/delivery/:orderId/problems', DeliveryProblemsController.store);
+
 routes.use(authMiddleware);
 routes.put('/users', UserController.update);
 
@@ -50,5 +53,12 @@ routes.get('/orders', OrderController.index);
 routes.post('/orders', OrderController.store);
 routes.put('/orders/:id', OrderController.update);
 routes.delete('/orders/:id', OrderController.delete);
+
+routes.get('/delivery/problems', DeliveryProblemsController.index);
+routes.get('/delivery/:id/problems', DeliveryProblemsController.show);
+routes.delete(
+  '/problem/:problemId/cancel-delivery',
+  DeliveryProblemsController.delete
+);
 
 export default routes;

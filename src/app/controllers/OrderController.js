@@ -5,7 +5,7 @@ import Deliveryman from '../models/Deliveryman';
 import Recipient from '../models/Recipient';
 
 import Queue from '../../lib/Queue';
-import CreateOrder from '../jobs/CreateOrder';
+import CreateOrderMail from '../jobs/CreateOrderMail';
 
 class OrderController {
   async index(req, res) {
@@ -68,7 +68,7 @@ class OrderController {
     const order = await Order.create(req.body);
     const { id, product } = order;
 
-    await Queue.add(CreateOrder.key, {
+    await Queue.add(CreateOrderMail.key, {
       deliveryman,
       order,
     });
